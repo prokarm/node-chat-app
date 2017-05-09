@@ -14,16 +14,32 @@ chatApp.use(express.static(publicPath));
 
 io.on('connection',(asocket) => {
   console.log('new connection is open');
-
-  asocket.emit('newMessage',{
-    from : 'goltya',
-    text:'hi i am goltya sending you the email'
-  });
+          asocket.emit('newmessage',{
+            from:'Admin',
+            text:'hello new user',
+            createdAt:new Date().getTime()
+          });
+          asocket.broadcast.emit('newmessage',{
+            from:'Admin',
+            text:'new user connected',
+            createdAt:new Date().getTime()
+          });
 
   asocket.on('createmessage',(newmail) => {
     console.log('new message got from client');
     console.log(newmail);
-  });
+//on gettin a message from the client we send the same message to all the active users
+    io.emit('newmessage',{ // this io will emit message to all connected socket
+      from:newmail.to,
+      text:newmail.text,
+      createdAt:new Date().getTime()
+    });
+    // asocket.broadcast.emit('newmessage',{
+    //   from:newmail.to,
+    //   text:newmail.text,
+    //   createdAt: new Date().getTime()
+    // });
+    });
   asocket.on('disconnect',() => {
     console.log('client no longer active');
   });
