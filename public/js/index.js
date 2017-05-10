@@ -11,11 +11,29 @@ socket.on('connect', () => {
 
 });
 
-socket.on('disconnect',() =>{
+
+socket.on('disconnect',() => {
   console.log('the server goes off line !!!');
 });
 
 socket.on('newmessage', function(newMessage) {
    console.log('received a new message from the server');
-  console.log(newMessage);
+   console.log(newMessage);
+   var li = $('<li></li>');
+   li.text(`${newMessage.from}: ${newMessage.text}`);
+
+   $('#message-list').append(li);
+ });
+
+ $('#form-message').on('submit',function(e){
+   e.preventDefault();
+
+   socket.emit('createmessage',{
+     from:"user",
+     text:$('[name=message]').val()
+   },function () {
+
+   });
+
+
  });

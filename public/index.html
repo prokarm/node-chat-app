@@ -11,18 +11,22 @@
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 </head>
-<body>
+<body id="container">
   <h1 class="text-warning">hello Karmjeet!! <small>welcome to a complete node webb app</small></h1>
-
+   <ol id="message-list"></ol>
+  <form id="form-message">
+    <input name="message" type="text" placeholder="your message">
+    <button class="btn btn-primary">send</button>
+  </form>
 
   <!-- ************* scripts **************** -->
-  <script
-    src="https://code.jquery.com/jquery-3.2.1.min.js"
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"
     integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="/socket.io/socket.io.js"></script>
+
 <script src="js/index.js"></script>
 </body>
 </html>
