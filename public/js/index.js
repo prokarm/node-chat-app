@@ -24,25 +24,34 @@ socket.on('newmessage', function(newMessage) {
 
    $('#message-list').append(li);
  });
-
+ //send message
+var $inputtext = $('[name=message]');
  $('#form-message').on('submit',function(e){
    e.preventDefault();
 
    socket.emit('createmessage',{
      from:"user",
-     text:$('[name=message]').val()
+     text:$inputtext.val()
    },function () {
-  $('[name=message]').val('');
+  $inputtext.val('');
    });
+   $inputtext.focus();
  });
 
+ //send location`
+var $userlocation = $('[name=sendlocation]');
  var $geolocation = $('#send_location');
+
    $geolocation.on('click',function () {
+
    if(!navigator.geolocation){
      return alert ('your app does not support geolocation');
    }
+    $userlocation.attr('disabled', 'disabled').val('sending location....');
    navigator.geolocation.getCurrentPosition(function(position){
 
+        $userlocation.removeAttr('disabled').val('send location');
+         $inputtext.focus();
      socket.emit('createlocationmessage',{
        latitude : position.coords.latitude,
        longitude: position.coords.longitude
