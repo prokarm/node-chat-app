@@ -32,8 +32,32 @@ socket.on('newmessage', function(newMessage) {
      from:"user",
      text:$('[name=message]').val()
    },function () {
-
+  $('[name=message]').val('');
    });
+ });
 
+ var $geolocation = $('#send_location');
+   $geolocation.on('click',function () {
+   if(!navigator.geolocation){
+     return alert ('your app does not support geolocation');
+   }
+   navigator.geolocation.getCurrentPosition(function(position){
 
+     socket.emit('createlocationmessage',{
+       latitude : position.coords.latitude,
+       longitude: position.coords.longitude
+     });
+   },function(){
+     alert('not a valid address or the address not found!!');
+   });
+ });
+
+ //lisetning to the location of the map
+ socket.on('newlocationmessage',(geolocation) =>  {
+   var $li =$('<li></li>');
+   $li.text(`${geolocation.from} `);
+   var  $a = $('<a target ="_blank">Here is my location </a>');
+   $a.attr('href',geolocation.url);
+   $li.append($a);
+   $('#message-list').append($li);
  });
