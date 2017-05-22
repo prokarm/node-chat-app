@@ -3,7 +3,8 @@
  const express = require('express');
 const socketIO = require('socket.io');
 
-const {generatemessage,generatelocationmessage} = require('./utils/message')
+const {generatemessage,generatelocationmessage} = require('./utils/message');
+const {isRealString} = require('./utils/validationString');
 
 const publicPath = path.join( __dirname , '/../public');
 var port = process.env.PORT || 3000 ;
@@ -16,9 +17,23 @@ chatApp.use(express.static(publicPath));
 
 io.on('connection',(asocket) => {
   console.log('new connection is open');
-  asocket.emit('newmessage',generatemessage('Karm','Welcome to chat app'));
 
-  asocket.broadcast.emit('newmessage',generatemessage('Karm','new user joined'));
+
+
+       /// when the user JOIN the room
+
+  asocket.on('join',(params ,errcallback) =>{
+     if( !isRealString(params.name) || !isRealString(params.room) ){
+          errcallback('sholud take only string only!!');
+     }
+
+     asocket.join(params.room);  //creating a seperate room or area in the connection
+
+     asocket.emit('newmessage',generatemessage('Karm','Welcome to chat app'));
+
+     asocket.broadcast.to(params.room).emit('newmessage',generatemessage('Karm',`${params.name} has joined the room`));
+     errcallback();
+  });
 
   asocket.on('createlocationmessage',(location) =>{
   asocket.broadcast.emit('newlocationmessage',generatelocationmessage('User',location.latitude,location.longitude));
