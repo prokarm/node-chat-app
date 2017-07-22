@@ -34,6 +34,18 @@ socket.on('connect', () => {
     }
   });
 
+
+  socket.on('userlist', function(user) {
+
+        console.log(user);
+        var ol =$('<ol></ol>');
+
+        user.forEach(function (user) {
+          ol.append($('<li></li>').text(user));
+        })
+    $('#userconnected').html(ol);
+  });
+
   // socket.emit('createmessage',{
   //   to:'battry',
   //   text:'hey T whats\'p '
@@ -70,7 +82,7 @@ $('#form-message').on('submit', function(e) {
   e.preventDefault();
 
   socket.emit('createmessage', {
-    from: "user",
+    // from: "user",        we are eliminating the from user part as it will be shown by server which has the username from the join page
     text: $inputtext.val()
   }, function() {
     $inputtext.val('');
@@ -104,13 +116,14 @@ $geolocation.on('click', function() {
 
 //lisetning to the location of the map
 socket.on('newlocationmessage', (geolocation) => {
+  console.log('hi karm geoloa');
 
     format_time = moment(geolocation.createdAt).format('h:mm a');
     var template_location = $('#location-template').html();
     var html = Mustache.render(template_location,{
       from:geolocation.from,
       url:geolocation.url,
-      createdAt:fromat_time
+      createdAt:format_time
     });
   $('#message-list').append(html);
   autoscroll();

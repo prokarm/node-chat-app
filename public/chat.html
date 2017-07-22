@@ -16,7 +16,7 @@
 
      <div class="chat__sidebar">
        <h3>People</h3>
-       <div></div>
+       <div id="userconnected"></div>
      </div>
      <div class="chat__main">
        <ol id="message-list" class="chat__messages"></ol>
@@ -57,7 +57,9 @@
             </h4>
         </div>
         <div class="message__body">
-              {{url}}
+          <p>
+            <a href="{{url}}" target="_blank">my  current location<a/>
+          </p>
         </div>
    </li>
 
